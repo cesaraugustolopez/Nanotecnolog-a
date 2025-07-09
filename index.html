@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Curso Interactivo de Nanotecnología</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts - Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gray-100 text-gray-900 flex flex-col">
+
+    <!-- Header -->
+    <header class="bg-gradient-to-r from-blue-600 to-indigo-700 text-white p-4 shadow-lg">
+        <div class="container mx-auto flex flex-col sm:flex-row justify-between items-center">
+            <h1 class="text-4xl font-bold mb-2 sm:mb-0">Curso de Nanotecnología</h1>
+            <nav>
+                <ul class="flex space-x-4">
+                    <li>
+                        <button id="btn-introduccion"
+                            class="px-4 py-2 rounded-md transition duration-300 ease-in-out bg-white text-blue-700 shadow-md">
+                            Introducción
+                        </button>
+                    </li>
+                    <li>
+                        <button id="btn-actividades"
+                            class="px-4 py-2 rounded-md transition duration-300 ease-in-out hover:bg-blue-500">
+                            Actividades
+                        </button>
+                    </li>
+                    <li>
+                        <button id="btn-laboratorio"
+                            class="px-4 py-2 rounded-md transition duration-300 ease-in-out hover:bg-blue-500">
+                            Laboratorio
+                        </button>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main id="main-content" class="container mx-auto p-6 flex-grow">
+        <!-- Content will be loaded here by JavaScript -->
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white p-4 text-center text-sm">
+        <p>&copy; 2025 Curso Interactivo de Nanotecnología. Todos los derechos reservados.</p>
+        <p>Diseñado para 'Makers' con pasión por la ciencia y la innovación.</p>
+    </footer>
+
+    <script>
+        // Data for the course content
+        // Datos para el contenido del curso
+        const courseContent = {
+            introduccion: {
+                title: "Reconocimiento de la ciencia, la tecnología y la innovación a partir de metodologías experienciales para alcanzar aprendizajes",
+                programCode: "Código del Programa de Formación: 23120012",
+                description: "Esta guía de aprendizaje ha sido diseñada para permitir a los participantes integrar las TIC en los procesos de enseñanza-aprendizaje. Con una duración total de 22 horas (20 presenciales y 2 desescolarizadas), busca que los 'Makers' – como se refiere a los participantes – se apropien de conceptos y elementos asociados a la nanotecnología a través de actividades prácticas y colaborativas.",
+                nanotechIntro: "La nanotecnología es un campo de investigación interdisciplinario relativamente nuevo, donde los científicos han desarrollado métodos y herramientas para explorar aspectos fundamentales de nuestro mundo natural y crear nuevos materiales y tecnologías. Se destaca su potencial transformador en la vida cotidiana, similar al impacto del automóvil o la computadora personal.",
+                advances: [
+                    "Materiales y partículas que combaten células cancerígenas.",
+                    "Microprocesadores más rápidos que consumen menos energía.",
+                    "Baterías hasta 10 veces más duraderas.",
+                    "Placas solares con mayor rendimiento."
+                ],
+                scales: "La guía permite a los participantes explorar aplicaciones de la nanociencia y la nanotecnología, como los materiales hidrofóbicos y el encapsulado de sustancias. Se enfatiza la importancia de comprender las diferentes escalas de medida: macroescala, microescala y nanoescala, siendo la nanoescala aquella que solo se puede percibir con microscopios electrónicos especializados y donde los elementos tienen un tamaño inferior a un micrómetro, pero superior a un nanómetro. Un nanómetro equivale a una milmillonésima parte de un metro (10⁻⁹ m)."
+            },
+            actividades: {
+                title: "Actividades Interactivas",
+                sections: [
+                    {
+                        id: "reflexion-inicial",
+                        name: "Actividades de Reflexión Inicial",
+                        description: "Imagina un mundo donde las personas son de tamaño reducido. Crea una historieta que explore la vida en esta nueva escala, inspirada en la ciencia del científico Carlo Rupert que podría reducir la distancia entre átomos.",
+                        component: 'HistorietaActivity' // Referencia al nombre de la función
+                    },
+                    {
+                        id: "contextualizacion",
+                        name: "Actividades de Contextualización",
+                        description: "Identifica la nanotecnología en tu entorno cotidiano y compara objetos según su escala de medida. ¡Vamos a descubrir la nano en el día a día!",
+                        component: 'ContextualizacionActivity' // Referencia al nombre de la función
+                    },
+                    {
+                        id: "apropiacion",
+                        name: "Actividades de Apropiación",
+                        description: "Juega para comprender las potencias de diez y las diferentes escalas de medida, desde la macro hasta la nanoescala. Luego, crea un superhéroe con poderes nanotecnológicos para derrotar a un villano, vinculando tus conocimientos sobre cristales y propiedades de los materiales a nivel atómico.",
+                        component: 'ApropiacionActivity' // Referencia al nombre de la función
+                    }
+                ]
+            },
+            laboratorio: {
+                title: "Prácticas de Laboratorio",
+                description: "Estas actividades te permitirán vivenciar la nanociencia a través de experimentos prácticos. Es crucial seguir todas las normas de bioseguridad y usar los elementos de protección personal adecuados para garantizar un ambiente seguro y responsable.",
+                practices: [
+                    "Conductividad eléctrica de disoluciones.",
+                    "Evaluación de la hidrofobicidad.",
+                    "Formación de nanofilms."
+                ],
+                safety: "¡La seguridad es lo primero! Siempre usa tus elementos de protección personal y sigue las normas de bioseguridad en el laboratorio."
+            }
+        };
+
+        // Function to render the Historieta (Comic) Activity
+        // Función para renderizar la Actividad de la Historieta (Cómic)
+        function HistorietaActivity() {
+            return `
+                <div class="bg-blue-50 p-4 rounded-lg mb-4 shadow-sm">
+                    <h4 class="text-xl font-semibold text-blue-800 mb-2">Crea tu Historieta</h4>
+                    <p class="text-gray-700 mb-3">Imagina la vida con personas de tamaño reducido. Describe tu idea para una historieta aquí:</p>
+                    <textarea
+                        id="comicIdea"
+                        class="w-full p-3 border border-blue-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        rows="6"
+                        placeholder="Escribe tu idea de historieta aquí..."
+                    ></textarea>
+                    <button
+                        id="saveComicIdea"
+                        class="mt-3 px-6 py-2 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 transition duration-300 ease-in-out shadow-md"
+                    >
+                        Guardar Idea
+                    </button>
+                </div>
+            `;
+        }
+
+        // Function to render the Contextualization Activity
+        // Función para renderizar la Actividad de Contextualización
+        function ContextualizacionActivity() {
+            return `
+                <div class="bg-green-50 p-4 rounded-lg mb-4 shadow-sm">
+                    <h4 class="text-xl font-semibold text-green-800 mb-2">Nanotecnología en tu Entorno</h4>
+                    <p class="text-gray-700 mb-3">Enumera ejemplos de nanotecnología que encuentres en tu vida diaria:</p>
+                    <textarea
+                        id="nanoExamples"
+                        class="w-full p-3 border border-green-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 mb-4"
+                        rows="4"
+                        placeholder="Ej: pantallas de smartphone, protectores solares, ropa antimanchas..."
+                    ></textarea>
+                    <button
+                        id="sendNanoExamples"
+                        class="px-6 py-2 bg-green-600 text-white font-semibold rounded-md hover:bg-green-700 transition duration-300 ease-in-out shadow-md"
+                    >
+                        Enviar Ejemplos
+                    </button>
+
+                    <h4 class="text-xl font-semibold text-green-800 mt-6 mb-2">Compara por Escala</h4>
+                    <p class="text-gray-700 mb-3">Ingresa dos objetos para compararlos según su escala de medida (macro, micro, nano):</p>
+                    <div class="flex flex-col sm:flex-row gap-3 mb-3">
+                        <input
+                            type="text"
+                            id="comparisonItem1"
+                            class="flex-1 p-3 border border-green-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                            placeholder="Objeto 1 (Ej: cabello humano)"
+                        />
+                        <input
+                            type="text"
+                            id="comparisonItem2"
+                            class="flex-1 p-3 border border-green-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                            placeholder="Objeto 2 (Ej: virus)"
+                        />
+                    </div>
+                    <button
+                        id="compareItems"
+                        class="px-6 py-2 bg-green-600 text-white font-semibold rounded-md hover:bg-green-700 transition duration-300 ease-in-out shadow-md"
+                    >
+                        Comparar
+                    </button>
+                    <p id="comparisonResult" class="mt-3 text-green-700 italic"></p>
+                </div>
+            `;
+        }
+
+        // Function to render the Apropiacion Activity
+        // Función para renderizar la Actividad de Apropiación
+        function ApropiacionActivity() {
+            return `
+                <div class="bg-purple-50 p-4 rounded-lg mb-4 shadow-sm">
+                    <h4 class="text-xl font-semibold text-purple-800 mb-2">Juego de Potencias de Diez</h4>
+                    <p class="text-gray-700 mb-3">¿Cuál es la potencia de diez que representa un nanómetro en metros?</p>
+                    <input
+                        type="text"
+                        id="powersOfTenGuess"
+                        class="w-full p-3 border border-purple-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 mb-3"
+                        placeholder="Ej: 10^-9"
+                    />
+                    <button
+                        id="checkPowersOfTen"
+                        class="px-6 py-2 bg-purple-600 text-white font-semibold rounded-md hover:bg-purple-700 transition duration-300 ease-in-out shadow-md"
+                    >
+                        Comprobar
+                    </button>
+                    <p id="powersOfTenFeedback" class="mt-3 text-purple-700 italic"></p>
+
+                    <h4 class="text-xl font-semibold text-purple-800 mt-6 mb-2">Crea tu Superhéroe Nanotecnológico</h4>
+                    <p class="text-gray-700 mb-3">Diseña un superhéroe con poderes basados en la nanotecnología y su villano:</p>
+                    <div class="mb-3">
+                        <label for="superheroName" class="block text-gray-700 text-sm font-bold mb-2">Nombre del Superhéroe:</label>
+                        <input
+                            type="text"
+                            id="superheroName"
+                            class="w-full p-3 border border-purple-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+                            placeholder="Ej: Nano-Man"
+                        />
+                    </div>
+                    <div class="mb-3">
+                        <label for="nanoPowers" class="block text-gray-700 text-sm font-bold mb-2">Poderes Nanotecnológicos:</label>
+                        <textarea
+                            id="nanoPowers"
+                            class="w-full p-3 border border-purple-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+                            rows="4"
+                            placeholder="Ej: Manipulación molecular, invisibilidad a escala atómica, regeneración celular rápida..."
+                        ></textarea>
+                    </div>
+                    <div class="mb-4">
+                        <label for="villainName" class="block text-gray-700 text-sm font-bold mb-2">Nombre del Villano a Derrotar:</label>
+                        <input
+                            type="text"
+                            id="villainName"
+                            class="w-full p-3 border border-purple-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+                            placeholder="Ej: Dr. Macro"
+                        />
+                    </div>
+                    <button
+                        id="createSuperhero"
+                        class="px-6 py-2 bg-purple-600 text-white font-semibold rounded-md hover:bg-purple-700 transition duration-300 ease-in-out shadow-md"
+                    >
+                        Crear Superhéroe
+                    </button>
+                </div>
+            `;
+        }
+
+        // Function to render the Introduction section
+        // Función para renderizar la sección de Introducción
+        function renderIntroduccionSection() {
+            const content = courseContent.introduccion;
+            return `
+                <div class="p-6 bg-white rounded-lg shadow-md">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-4">${content.title}</h2>
+                    <p class="text-sm text-gray-600 mb-2">${content.programCode}</p>
+                    <p class="text-gray-700 mb-4">${content.description}</p>
+
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-3">¿Qué es la Nanotecnología?</h3>
+                    <p class="text-gray-700 mb-4">${content.nanotechIntro}</p>
+
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-3">Avances Impactantes</h3>
+                    <ul class="list-disc list-inside text-gray-700 mb-4 pl-4">
+                        ${content.advances.map(advance => `<li>${advance}</li>`).join('')}
+                    </ul>
+
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-3">Escalas de Medida</h3>
+                    <p class="text-gray-700 mb-4">${content.scales}</p>
+                    <div class="flex justify-center items-center my-6">
+                        <!-- Image for scales of measurement with the specified path -->
+                        <!-- Imagen para las escalas de medida con la ruta especificada -->
+                        <img src="images/escalas_medida_nanotecnologia.jpg" alt="Infografía de Escalas de Medida en Nanotecnología" class="rounded-lg shadow-sm" onerror="this.onerror=null;this.src='https://placehold.co/600x200/ADD8E6/000000?text=Imagen+no+disponible';"/>
+                    </div>
+                    <p class="text-sm text-gray-600 italic">Un nanómetro equivale a una milmillonésima parte de un metro ($10^{-9}$ m).</p>
+                </div>
+            `;
+        }
+
+        // Function to render the Activities section
+        // Función para renderizar la sección de Actividades
+        function renderActividadesSection() {
+            const content = courseContent.actividades;
+            let html = `
+                <div class="p-6 bg-white rounded-lg shadow-md">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-4">${content.title}</h2>
+            `;
+            content.sections.forEach(section => {
+                html += `
+                    <div class="mb-8">
+                        <h3 class="text-2xl font-semibold text-gray-800 mb-3">${section.name}</h3>
+                        <p class="text-gray-700 mb-4">${section.description}</p>
+                `;
+                // Dynamically call the component function
+                // Llama dinámicamente a la función del componente
+                if (typeof window[section.component] === 'function') {
+                    html += window[section.component]();
+                }
+                html += `</div>`;
+            });
+            html += `</div>`;
+            return html;
+        }
+
+        // Function to render the Lab Practices section
+        // Función para renderizar la sección de Prácticas de Laboratorio
+        function renderLaboratorioSection() {
+            const content = courseContent.laboratorio;
+            return `
+                <div class="p-6 bg-white rounded-lg shadow-md">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-4">${content.title}</h2>
+                    <p class="text-gray-700 mb-4">${content.description}</p>
+
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-3">Prácticas Clave:</h3>
+                    <ul class="list-disc list-inside text-gray-700 mb-4 pl-4">
+                        ${content.practices.map(practice => `<li>${practice}</li>`).join('')}
+                    </ul>
+
+                    <div class="bg-red-50 border-l-4 border-red-500 text-red-700 p-4 rounded-md" role="alert">
+                        <p class="font-bold">¡Advertencia de Seguridad!</p>
+                        <p>${content.safety}</p>
+                        <div class="flex justify-center items-center my-4">
+                            <img src="https://placehold.co/400x150/FFCCCC/000000?text=Equipo+de+Protección+Personal" alt="Equipo de Protección Personal" class="rounded-lg shadow-sm" />
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Function to render the active section
+        // Función para renderizar la sección activa
+        function renderSection(sectionId) {
+            const mainContent = document.getElementById('main-content');
+            let htmlContent = '';
+
+            // Remove previous event listeners to prevent duplicates
+            // Eliminar los listeners de eventos anteriores para evitar duplicados
+            removeActivityEventListeners();
+
+            switch (sectionId) {
+                case 'introduccion':
+                    htmlContent = renderIntroduccionSection();
+                    break;
+                case 'actividades':
+                    htmlContent = renderActividadesSection();
+                    break;
+                case 'laboratorio':
+                    htmlContent = renderLaboratorioSection();
+                    break;
+                default:
+                    htmlContent = renderIntroduccionSection();
+                    break;
+            }
+            mainContent.innerHTML = htmlContent;
+
+            // Add event listeners after content is rendered
+            // Añadir listeners de eventos después de que se renderice el contenido
+            addActivityEventListeners(sectionId);
+            updateActiveButton(sectionId);
+        }
+
+        // Function to update active button styling
+        // Función para actualizar el estilo del botón activo
+        function updateActiveButton(activeSectionId) {
+            document.querySelectorAll('nav button').forEach(button => {
+                button.classList.remove('bg-white', 'text-blue-700', 'shadow-md');
+                button.classList.add('hover:bg-blue-500');
+            });
+            document.getElementById(`btn-${activeSectionId}`).classList.add('bg-white', 'text-blue-700', 'shadow-md');
+            document.getElementById(`btn-${activeSectionId}`).classList.remove('hover:bg-blue-500');
+        }
+
+        // Function to remove activity-specific event listeners
+        // Función para eliminar los listeners de eventos específicos de la actividad
+        function removeActivityEventListeners() {
+            const saveComicIdeaBtn = document.getElementById('saveComicIdea');
+            if (saveComicIdeaBtn) saveComicIdeaBtn.onclick = null;
+
+            const sendNanoExamplesBtn = document.getElementById('sendNanoExamples');
+            if (sendNanoExamplesBtn) sendNanoExamplesBtn.onclick = null;
+
+            const compareItemsBtn = document.getElementById('compareItems');
+            if (compareItemsBtn) compareItemsBtn.onclick = null;
+
+            const checkPowersOfTenBtn = document.getElementById('checkPowersOfTen');
+            if (checkPowersOfTenBtn) checkPowersOfTenBtn.onclick = null;
+
+            const createSuperheroBtn = document.getElementById('createSuperhero');
+            if (createSuperheroBtn) createSuperheroBtn.onclick = null;
+        }
+
+        // Function to add activity-specific event listeners
+        // Función para añadir los listeners de eventos específicos de la actividad
+        function addActivityEventListeners(sectionId) {
+            if (sectionId === 'actividades') {
+                // Historieta Activity
+                const saveComicIdeaBtn = document.getElementById('saveComicIdea');
+                if (saveComicIdeaBtn) {
+                    saveComicIdeaBtn.onclick = () => {
+                        const comicIdea = document.getElementById('comicIdea').value;
+                        alert('¡Tu idea de historieta ha sido guardada! (Simulado): ' + comicIdea);
+                    };
+                }
+
+                // Contextualization Activity
+                const sendNanoExamplesBtn = document.getElementById('sendNanoExamples');
+                if (sendNanoExamplesBtn) {
+                    sendNanoExamplesBtn.onclick = () => {
+                        const nanoExamples = document.getElementById('nanoExamples').value;
+                        alert('¡Gracias por tus ejemplos! (Simulado): ' + nanoExamples);
+                    };
+                }
+
+                const compareItemsBtn = document.getElementById('compareItems');
+                if (compareItemsBtn) {
+                    compareItemsBtn.onclick = () => {
+                        const comparisonItem1 = document.getElementById('comparisonItem1').value;
+                        const comparisonItem2 = document.getElementById('comparisonItem2').value;
+                        const comparisonResultElem = document.getElementById('comparisonResult');
+                        if (comparisonItem1 && comparisonItem2) {
+                            comparisonResultElem.textContent = `Interesante comparación entre "${comparisonItem1}" y "${comparisonItem2}" en diferentes escalas. ¡Piensa en cómo la nanotecnología podría influir en ellos!`;
+                        } else {
+                            comparisonResultElem.textContent = 'Por favor, ingresa dos elementos para comparar.';
+                        }
+                    };
+                }
+
+                // Apropiacion Activity
+                const checkPowersOfTenBtn = document.getElementById('checkPowersOfTen');
+                if (checkPowersOfTenBtn) {
+                    checkPowersOfTenBtn.onclick = () => {
+                        const powersOfTenGuess = document.getElementById('powersOfTenGuess').value;
+                        const powersOfTenFeedbackElem = document.getElementById('powersOfTenFeedback');
+                        const correctPowerOfTen = "10^-9";
+                        if (powersOfTenGuess.trim().toLowerCase() === correctPowerOfTen.toLowerCase()) {
+                            powersOfTenFeedbackElem.textContent = "¡Correcto! Un nanómetro es 10⁻⁹ metros.";
+                        } else {
+                            powersOfTenFeedbackElem.textContent = `Incorrecto. La respuesta correcta para un nanómetro es ${correctPowerOfTen}.`;
+                        }
+                    };
+                }
+
+                const createSuperheroBtn = document.getElementById('createSuperhero');
+                if (createSuperheroBtn) {
+                    createSuperheroBtn.onclick = () => {
+                        const superheroName = document.getElementById('superheroName').value;
+                        const nanoPowers = document.getElementById('nanoPowers').value;
+                        const villainName = document.getElementById('villainName').value;
+                        alert(`¡Tu superhéroe (${superheroName}) y villano (${villainName}) han sido creados! ¡Prepárate para la batalla! (Simulado)`);
+                    };
+                }
+            }
+        }
+
+        // Event listeners for navigation buttons
+        // Listeners de eventos para los botones de navegación
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('btn-introduccion').addEventListener('click', () => renderSection('introduccion'));
+            document.getElementById('btn-actividades').addEventListener('click', () => renderSection('actividades'));
+            document.getElementById('btn-laboratorio').addEventListener('click', () => renderSection('laboratorio'));
+
+            // Initial render of the introduction section
+            // Renderizado inicial de la sección de introducción
+            renderSection('introduccion');
+        });
+    </script>
+</body>
+</html>
+
